@@ -30,14 +30,13 @@ function scoresAverage(array) {
     if(!array.length) {
         return 0;
     }
-   let movieScores = array.map((movie) => {
-    return movie.score;
-   })
-    let totalScore = movieScores.reduce((acc, element) => {
-            return acc + element; 
-    }, 0)
-   return  Number((totalScore / array.length).toFixed(2));
-}    
+    let movieScores = array
+        .map(movie => (typeof movie.score === 'number' ? movie.score : 0));
+
+    let totalScore = movieScores.reduce((acc, element) => acc + element, 0);
+
+    return Number((totalScore / array.length).toFixed(2));
+}   
 
 // Iteration 4: Drama movies - Get the average of Drama Movies
 function dramaMoviesScore(array) {
@@ -81,20 +80,25 @@ function turnHoursToMinutes(moviesArray) {
 
 // BONUS - Iteration 8: Best yearly score average - Best yearly score average
 function bestYearAvg(moviesArray) {
-    if (moviesArray.length === 0) return null;
+  if (moviesArray.length === 0) return null;
+
   const years = [...new Set(moviesArray.map(movie => movie.year))];
+  
   let bestYear = years[0];
   let bestAverage = -1;
+
   for (const year of years) {
-    const yearMovies = movies.filter(movie => movie.year === year);
-    const average = scoresAverage(yearMovies);
-    if (average > bestAverage || (average === bestAverage && year < bestYear)) {
-      bestYear = year;
-      bestAverage = average;
-    }
+      const yearMovies = moviesArray.filter(movie => movie.year === year);
+      const average = scoresAverage(yearMovies);
+
+      if (average > bestAverage || (average === bestAverage && year < bestYear)) {
+          bestYear = year;
+          bestAverage = average;
+      }
   }
   return `The best year was ${bestYear} with an average score of ${bestAverage}`;
 }
+
  
   
   
